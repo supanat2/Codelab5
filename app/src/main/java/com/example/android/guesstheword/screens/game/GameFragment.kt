@@ -16,9 +16,8 @@
 
 package com.example.android.guesstheword.screens.game
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,12 +34,9 @@ import com.example.android.guesstheword.databinding.GameFragmentBinding
  */
 class GameFragment : Fragment() {
 
-
     private lateinit var binding: GameFragmentBinding
 
-
     private lateinit var viewModel: GameViewModel
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -52,8 +48,9 @@ class GameFragment : Fragment() {
                 container,
                 false
         )
-
         Log.i("GameFragment", "Called ViewModelProviders.of")
+
+        // Get the viewModel
         viewModel = ViewModelProviders.of(this).get(GameViewModel::class.java)
 
         binding.correctButton.setOnClickListener { onCorrect() }
@@ -62,11 +59,9 @@ class GameFragment : Fragment() {
         updateScoreText()
         updateWordText()
         return binding.root
-
     }
 
-
-    /** Methods for button click handlers **/
+    /** Methods for buttons presses **/
 
     private fun onSkip() {
         viewModel.onSkip()
@@ -79,22 +74,26 @@ class GameFragment : Fragment() {
         updateWordText()
     }
 
+    private fun onEndGame() {
+        gameFinished()
+    }
 
     /** Methods for updating the UI **/
 
     private fun updateWordText() {
         binding.wordText.text = viewModel.word
+
     }
 
     private fun updateScoreText() {
         binding.scoreText.text = viewModel.score.toString()
     }
 
-    private fun onEndGame(){
-        gameFinished()
-    }
+    /**
+     * Called when the game is finished
+     */
     private fun gameFinished() {
-        Toast.makeText(activity, "Game has just finished",Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, "Game has just finished", Toast.LENGTH_SHORT).show()
         val action = GameFragmentDirections.actionGameToScore()
         action.score = viewModel.score
         NavHostFragment.findNavController(this).navigate(action)

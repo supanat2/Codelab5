@@ -31,8 +31,10 @@ import com.example.android.guesstheword.databinding.ScoreFragmentBinding
  * Fragment where the final score is shown, after the game is over
  */
 class ScoreFragment : Fragment() {
+
     private lateinit var viewModel: ScoreViewModel
     private lateinit var viewModelFactory: ScoreViewModelFactory
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -46,9 +48,11 @@ class ScoreFragment : Fragment() {
                 container,
                 false
         )
+
+        viewModelFactory = ScoreViewModelFactory(ScoreFragmentArgs.fromBundle(arguments!!).score)
         viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(ScoreViewModel::class.java)
-        viewModelFactory = ScoreViewModelFactory(ScoreFragmentArgs.fromBundle(arguments!!).score)
+
         binding.scoreText.text = viewModel.score.toString()
 
         return binding.root
